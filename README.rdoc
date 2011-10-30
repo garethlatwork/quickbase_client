@@ -1,0 +1,66 @@
+= quickbase_client
+
+A Ruby client for database applications on http://www.quickbase.com.
+
+This is a minimal subset of the ipp_quickbase_devkit.
+
+It is built using the latest code on https://code.intuit.com/sf/wiki/do/viewPage/projects.ipp_dev_kits/wiki/RubyDevKit .
+
+== Example
+
+# list all accessible applications and tables 
+
+require 'QuickBaseClient'
+
+qbc = QuickBase::Client.new("quickbase_username","quickbase_password")
+
+qbc.grantedDBs{|db| 
+  puts "dbid: #{db.dbinfo.dbid}, dbname: #{db.dbinfo.dbname}" 
+} 
+
+
+== Documentation
+
+More information about the QuickBase Client is available here - 
+
+- Code Intuit Com: https://code.intuit.com/sf/projects/ipp_dev_kits 
+- ipp_quickbase_devkit: https://code.intuit.com/sf/wiki/do/viewPage/projects.ipp_dev_kits/wiki/RubyDevKit 
+- QuickBase API Cookbook: https://www.quickbase.com/db/bcdcajmrf 
+- QuickBase HTTP API: http://www.quickbase.com/api-guide/index.html 
+
+
+== Change History
+
+1.0.18 - 09/16/2011 - editRecord() now supports using optional key field as a record identifier.
+
+1.0.17 - 09/05/2011 - Added getFileDownloadURL().
+
+1.0.16 - 07/14/2011 - Added support for new API_CopyMasterDetail call.
+
+1.0.15 - 06/02/2011 - Fixed downloadFile problem caused by httpclient update.
+
+1.0.14 - 05/29/2011 - Added support for new List-User field type.
+
+1.0.13 - 05/10/2011 - Added getRecords(): get an array of records using record ids.
+
+1.0.12 - 05/08/2011 - Added findRecords and find_records getFilteredRecords aliases.
+
+1.0.11 - 05/08/2011 - Fixed a problem with getFilteredRecords().
+
+1.0.10 - 03/27/2011 - Can now use require 'quickbase_client' instead of require 'QuickBaseClient'.
+
+See CHANGES file for earlier updates.
+
+
+== Questions?
+
+Please submit questions, feedback, suggestions on Intuit's Community Forum at http://community.intuit.com/categories/contents/10298?content_view_type=ALL&sort=2 .
+
+== License
+
+Copyright (c) 2009-2011 Gareth Lewis and Intuit, Inc.
+
+All rights reserved. This program and the accompanying materials
+are made available under the terms of the Eclipse Public License v1.0
+which accompanies this distribution, and is available at
+http://www.opensource.org/licenses/eclipse-1.0.php
