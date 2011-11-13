@@ -1,5 +1,7 @@
 == Change History
 
+1.0.19 - 11/13/2011 - Accommodate Net::HTTP changes in Ruby 1.9.3.
+
 1.0.18 - 09/16/2011 - editRecord() now supports using optional key field as a record identifier.
 
 1.0.17 - 09/05/2011 - Added getFileDownloadURL().

@@ -25,9 +25,9 @@ end
 
 module QuickBase
 
-# QuickBase client: Version 1.0.0: Ruby wrapper class for QuickBase HTTP API.
+# QuickBase Client: Ruby wrapper class for QuickBase HTTP API.
 # The class's method and member variable names correspond closely to the QuickBase HTTP API reference.
-# This class was written using ruby 1.8.6.
+# This class was written using ruby 1.8.6.  It is strongly recommended that you use ruby 1.9.2 or higher.
 # Use REXML to process any QuickBase response XML not handled by this class.
 # The main work of this class is done in initialize(), sendRequest(), and processResponse().
 # The API_ wrapper methods just set things up for sendRequest() and put values from the
@@ -238,7 +238,13 @@ class Client
             @responseCode = response.status
             @responseXML = response.content
          else  
-            @responseCode, @responseXML = @httpConnection.post( @requestURL, @requestXML, @requestHeaders )
+            if Net::HTTP.version_1_2?
+               response = @httpConnection.post( @requestURL, @requestXML, @requestHeaders )
+               @responseCode = response.code
+               @responseXML = response.body
+            else
+               @responseCode, @responseXML = @httpConnection.post( @requestURL, @requestXML, @requestHeaders )
+            end	
          end
           
          printResponse( @responseCode,  @responseXML ) if @printRequestsAndResponses
