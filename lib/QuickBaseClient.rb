@@ -37,7 +37,7 @@ class Client
    attr_reader :access, :accessid, :accountLimit, :accountUsage, :action, :admin 
    attr_reader :adminOnly, :ancestorappid, :app, :appdbid, :appdata, :applicationLimit, :applicationUsage, :apptoken, :authenticationXML 
    attr_reader :cacheSchemas, :cachedSchemas, :chdbids, :choice, :clist, :copyfid, :create, :createapptoken, :createdTime 
-   attr_reader :databases, :dbdesc, :dbid, :dbidForRequestURL, :dbname, :delete, :destrid, :disprec, :domain, :downLoadFileURL
+   attr_reader :databases, :dbdesc, :dbid, :dbidForRequestURL, :dbname, :delete, :destrid, :dfid, :disprec, :domain, :downLoadFileURL
    attr_reader :email, :errcode, :errdetail, :errtext, :excludeparents, :externalAuth, :fform
    attr_reader :fid, :fids, :field, :fields, :field_data, :field_data_list, :fieldTypeLabelMap, :fieldValue, :fileContents, :fileUploadToken, :firstName, :fmt, :fname, :fnames, :fvlist
    attr_reader :hours, :HTML, :httpConnection, :id, :ignoreError, :includeancestors 
@@ -2556,12 +2556,13 @@ class Client
     end
 
    # API_GetRecordAsHTML
-   def getRecordAsHTML( dbid, rid, jht = nil )
+   def getRecordAsHTML( dbid, rid, jht = nil, dfid = nil )
 
-      @dbid, @rid, @jht = dbid, rid, jht
+      @dbid, @rid, @jht, @dfid = dbid, rid, jht, dfid
 
       xmlRequestData = toXML( :rid, @rid )
       xmlRequestData << toXML( :jht, "1" ) if @jht
+      xmlRequestData << toXML( :dfid, @dfid ) if @dfid
 
       sendRequest( :getRecordAsHTML, xmlRequestData )
 
@@ -2572,7 +2573,7 @@ class Client
     end
     
    # API_GetRecordAsHTML, using the active table id. 
-   def _getRecordAsHTML( rid, jht = nil ) getRecordAsHTML( @dbid, rid, jht ) end
+   def _getRecordAsHTML( rid, jht = nil, dfid = nil ) getRecordAsHTML( @dbid, rid, jht, dfid ) end
 
    # API_GetRecordInfo
    def getRecordInfo( dbid, rid )
