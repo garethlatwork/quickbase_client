@@ -1,5 +1,7 @@
 == Change History
 
+1.0.20 - 11/18/2011 - Added optional dfid param to getRecordAsHTML.
+
 1.0.19 - 11/13/2011 - Accommodate Net::HTTP changes in Ruby 1.9.3.
 
 1.0.18 - 09/16/2011 - editRecord() now supports using optional key field as a record identifier.
