@@ -2,10 +2,6 @@
 
 A Ruby client for database applications on http://www.quickbase.com.
 
-This is a minimal subset of the ipp_quickbase_devkit.
-
-It is built using the latest code on https://code.intuit.com/sf/wiki/do/viewPage/projects.ipp_dev_kits/wiki/RubyDevKit .
-
 == Example
 
 # list all accessible applications and tables 
@@ -23,13 +19,16 @@ qbc.grantedDBs{|db|
 
 More information about the QuickBase Client is available here - 
 
+- QuickBase HTTP API: http://www.quickbase.com/api-guide/index.html 
+- QuickBase API Cookbook: https://www.quickbase.com/db/bcdcajmrf 
+- Github: https://github.com/garethlatwork/quickbase_client 
+- Github: https://github.com/garethlatwork/quickbase_client_extras 
 - Code Intuit Com: https://code.intuit.com/sf/projects/ipp_dev_kits 
 - ipp_quickbase_devkit: https://code.intuit.com/sf/wiki/do/viewPage/projects.ipp_dev_kits/wiki/RubyDevKit 
-- QuickBase API Cookbook: https://www.quickbase.com/db/bcdcajmrf 
-- QuickBase HTTP API: http://www.quickbase.com/api-guide/index.html 
-
 
 == Change History
+
+1.0.21 - 05/28/2012 - Changed gem homepage to github.
 
 1.0.20 - 11/18/2011 - Added optional dfid param to getRecordAsHTML.
 
@@ -60,7 +59,7 @@ Please submit questions, feedback, suggestions on Intuit's Community Forum at ht
 
 == License
 
-Copyright (c) 2009-2011 Gareth Lewis and Intuit, Inc.
+Copyright (c) 2009-2012 Gareth Lewis and Intuit, Inc.
 
 All rights reserved. This program and the accompanying materials
 are made available under the terms of the Eclipse Public License v1.0
