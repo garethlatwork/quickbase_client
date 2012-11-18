@@ -94,11 +94,24 @@ module QuickBase
     
     def Misc.listUserToArray(listUser)
       listUser.split(/;/)
-    end	    
+    end
     
     def Misc.arrayToListUser(array)
       array.join(";")
-    end	    
+    end
+    
+   def Misc.save_file(filename, contents, mode="wb")
+      File.open(filename, mode){|f|
+         f.write(contents)
+         f.flush
+      }
+      rescue StandardError => error
+      new_filename = filename.gsub(/\W/,"_")
+      File.open(new_filename, mode){|f|
+         f.write(contents)
+         f.flush
+      }
+   end
        
   end
 end

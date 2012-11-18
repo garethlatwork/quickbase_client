@@ -28,6 +28,8 @@ More information about the QuickBase Client is available here -
 
 == Change History
 
+1.0.22 - 11/17/2012 - Added downloadAndSaveFile, uploadFileContents.
+
 1.0.21 - 05/28/2012 - Changed gem homepage to github.
 
 1.0.20 - 11/18/2011 - Added optional dfid param to getRecordAsHTML.
@@ -55,7 +57,7 @@ See CHANGES file for earlier updates.
 
 == Questions?
 
-Please submit questions, feedback, suggestions on Intuit's Community Forum at http://community.intuit.com/categories/contents/10298?content_view_type=ALL&sort=2 .
+Please submit questions, feedback, suggestions on Intuit's Community Forum at https://quickbase-community-e2e.intuit.com .
 
 == License
 

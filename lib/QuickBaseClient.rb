@@ -2196,6 +2196,24 @@ class Client
    alias downloadFile downLoadFile
    alias _downloadFile _downLoadFile
    
+   # Download and save a file from a file attachment field in QuickBase.
+   # Use the filename parameter to override the file name from QuickBase.
+   def downloadAndSaveFile( dbid, rid, fid, filename = nil, vid = "0"  )
+      response, fileContents = downLoadFile( dbid, rid, fid, vid )
+      if fileContents and fileContents.length > 0
+         if filename and filename.length > 0
+            Misc.save_file( filename, fileContents )
+         else
+            record = getRecord( rid, dbid, [fid] )
+            if record and record[fid] and record[fid].length > 0
+               Misc.save_file( record[fid], fileContents )
+            else
+               Misc.save_file( "#{dbid}_#{rid}_#{fid}", fileContents )
+            end
+         end
+      end
+   end
+   
    # API_EditRecord
    def editRecord( dbid, rid, fvlist, disprec = nil, fform = nil, ignoreError = nil, update_id = nil, msInUTC =nil, key = nil )
 
@@ -4525,6 +4543,23 @@ class Client
       if dbid and filename and fileAttachmentFieldName
          clearFieldValuePairList
          addFieldValuePair( fileAttachmentFieldName, nil, filename, nil )
+         if additionalFieldsToSet and additionalFieldsToSet.is_a?( Hash )
+            additionalFieldsToSet.each{ |fieldName,fieldValue|
+               addFieldValuePair( fieldName, nil, nil, fieldValue )
+            }
+         end
+         return addRecord( dbid, @fvlist )
+      end
+      nil
+   end
+   
+   # Add a File Attachment into a new record in a table, using a string containing the file contents.
+   # Additional field values can optionally be set.
+   # e.g. uploadFile( "dhnju5y7", "contacts.txt", "fred: 1-222-333-4444", "Contacts File", { "Notes" => "#{Time.now}" }
+   def uploadFileContents( dbid, filename, fileContents, fileAttachmentFieldName, additionalFieldsToSet = nil )
+      if dbid and filename and fileAttachmentFieldName
+         clearFieldValuePairList
+         addFieldValuePair( fileAttachmentFieldName, nil, filename, fileContents )
          if additionalFieldsToSet and additionalFieldsToSet.is_a?( Hash )
             additionalFieldsToSet.each{ |fieldName,fieldValue|
                addFieldValuePair( fieldName, nil, nil, fieldValue )

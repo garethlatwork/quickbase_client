@@ -1,5 +1,9 @@
 == Change History
 
+1.0.22 - 11/17/2012 - Added downloadAndSaveFile, uploadFileContents.
+
+1.0.21 - 05/28/2012 - Changed gem homepage to github.
+
 1.0.20 - 11/18/2011 - Added optional dfid param to getRecordAsHTML.
 
 1.0.19 - 11/13/2011 - Accommodate Net::HTTP changes in Ruby 1.9.3.
