@@ -1011,6 +1011,25 @@ class Client
         reportNames
     end  
 
+   # Given a DBID, get the QuickBase realm it is in.
+   def getRealmForDbid(dbid)
+      @realm = nil
+      if USING_HTTPCLIENT
+         begin
+            httpclient = HTTPClient.new
+            resp = httpclient.get("https://www.quickbase.com/db/#{dbid}")
+            @realm = resp.header['Location'][0]
+            @realm.sub!("https://","")
+            @realm.sub!(".quickbase.com/db/#{dbid}","")
+         rescue StandardError => error
+            @realm = nil 
+         end
+      else
+         raise "Please get the HTTPClient gem: gem install httpclient" 
+      end   
+      @realm
+   end	
+
    # Builds the XML for a specific item included in a request to QuickBase.
    def toXML( tag, value = nil )
       if value

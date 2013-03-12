@@ -28,6 +28,8 @@ More information about the QuickBase Client is available here -
 
 == Change History
 
+1.0.23 - 03/11/2013 - Added getRealmForDbid(dbid)
+
 1.0.22 - 11/17/2012 - Added downloadAndSaveFile, uploadFileContents.
 
 1.0.21 - 05/28/2012 - Changed gem homepage to github.
@@ -48,12 +50,7 @@ More information about the QuickBase Client is available here -
 
 1.0.13 - 05/10/2011 - Added getRecords(): get an array of records using record ids.
 
-1.0.12 - 05/08/2011 - Added findRecords and find_records getFilteredRecords aliases.
-
-1.0.11 - 05/08/2011 - Fixed a problem with getFilteredRecords().
-
 See CHANGES file for earlier updates.
-
 
 == Questions?
 
