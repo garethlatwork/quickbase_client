@@ -1018,9 +1018,10 @@ class Client
          begin
             httpclient = HTTPClient.new
             resp = httpclient.get("https://www.quickbase.com/db/#{dbid}")
-            @realm = resp.header['Location'][0]
-            @realm.sub!("https://","")
-            @realm.sub!(".quickbase.com/db/#{dbid}","")
+            location = resp.header['Location'][0]
+            location.sub!("https://","")
+	    parts = location.split(/\./)
+	    @realm = parts[0]
          rescue StandardError => error
             @realm = nil 
          end
