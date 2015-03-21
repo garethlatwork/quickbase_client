@@ -3086,10 +3086,11 @@ class Client
    # Use this if you aren't sure whether a particular record already exists or not
    def addOrEditRecord( dbid, fvlist, rid = nil, disprec = nil, fform = nil, ignoreError = nil, update_id = nil, key = nil  )
       if rid or key
-        editRecord( dbid, rid, fvlist, disprec, fform, ignoreError, update_id, key )
+        record = editRecord( dbid, rid, fvlist, disprec, fform, ignoreError, update_id, key )
         if !@requestSucceeded
           addRecord( dbid, fvlist, disprec, fform, ignoreError, update_id )
         end
+        record
       else    
         addRecord( dbid, fvlist, disprec, fform, ignoreError, update_id )
       end  
