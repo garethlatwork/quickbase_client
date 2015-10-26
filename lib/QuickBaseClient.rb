@@ -154,12 +154,12 @@ class Client
       @org = org
       @domain = domain
       if USING_HTTPCLIENT
-         if proxy_options
-            @httpConnection = HTTPClient.new( "http://#{proxy_options["proxy_server"]}:#{proxy_options["proxy_port"]}" )
-            @httpConnection.set_auth(proxy_options["proxy_server"], proxy_options["proxy_user"], proxy_options["proxy_password"])
-         else
-            @httpConnection = HTTPClient.new
-         end
+        if proxy_options
+           @httpConnection = HTTPClient.new( "http://#{proxy_options["proxy_server"]}:#{proxy_options["proxy_port"]}" )
+         @httpConnection.set_auth(proxy_options["proxy_server"], proxy_options["proxy_user"], proxy_options["proxy_password"])
+      else
+         @httpConnection = HTTPClient.new
+      end
       else
          if proxy_options
             @httpProxy = Net::HTTP::Proxy(proxy_options["proxy_server"], proxy_options["proxy_port"], proxy_options["proxy_user"], proxy_options["proxy_password"])
