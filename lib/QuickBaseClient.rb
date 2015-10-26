@@ -154,21 +154,21 @@ class Client
       @org = org
       @domain = domain
       if USING_HTTPCLIENT
-        if proxy_options
-           @httpConnection = HTTPClient.new( "#{proxy_options["proxy_server"]}:#{proxy_options["proxy_port"] || useSSL ? "443" : "80"}" )
-           @httpConnection.set_auth(proxy_options["proxy_server"], proxy_options["proxy_user"], proxy_options["proxy_password"])
-        else  
-           @httpConnection = HTTPClient.new 
-        end
-      else  
-        if proxy_options
-           @httpProxy = Net::HTTP::Proxy(proxy_options["proxy_server"], proxy_options["proxy_port"], proxy_options["proxy_user"], proxy_options["proxy_password"])
-           @httpConnection = @httpProxy.new( "#{@org}.#{@domain}.com", useSSL ? 443 : 80)
-        else
-           @httpConnection = Net::HTTP.new( "#{@org}.#{@domain}.com", useSSL ? 443 : 80 )
-        end  
-        @httpConnection.use_ssl = useSSL
-        @httpConnection.verify_mode = OpenSSL::SSL::VERIFY_NONE
+         if proxy_options
+            @httpConnection = HTTPClient.new( "http://#{proxy_options["proxy_server"]}:#{proxy_options["proxy_port"] || useSSL ? "443" : "80"}" )
+            @httpConnection.set_auth(proxy_options["proxy_server"], proxy_options["proxy_user"], proxy_options["proxy_password"])
+         else
+            @httpConnection = HTTPClient.new
+         end
+      else
+         if proxy_options
+            @httpProxy = Net::HTTP::Proxy(proxy_options["proxy_server"], proxy_options["proxy_port"], proxy_options["proxy_user"], proxy_options["proxy_password"])
+            @httpConnection = @httpProxy.new( "#{@org}.#{@domain}.com", useSSL ? 443 : 80)
+         else
+            @httpConnection = Net::HTTP.new( "#{@org}.#{@domain}.com", useSSL ? 443 : 80 )
+         end
+         @httpConnection.use_ssl = useSSL
+         @httpConnection.verify_mode = OpenSSL::SSL::VERIFY_NONE
       end
    end
     
