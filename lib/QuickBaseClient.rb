@@ -155,7 +155,7 @@ class Client
       @domain = domain
       if USING_HTTPCLIENT
          if proxy_options
-            @httpConnection = HTTPClient.new( "http://#{proxy_options["proxy_server"]}:#{proxy_options["proxy_port"] || useSSL ? "443" : "80"}" )
+            @httpConnection = HTTPClient.new( "http://#{proxy_options["proxy_server"]}:#{proxy_options["proxy_port"]}" )
             @httpConnection.set_auth(proxy_options["proxy_server"], proxy_options["proxy_user"], proxy_options["proxy_password"])
          else
             @httpConnection = HTTPClient.new
