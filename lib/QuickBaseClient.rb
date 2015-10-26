@@ -149,28 +149,28 @@ class Client
    end
 
    # Initializes the connection to QuickBase.
-   def setHTTPConnection( useSSL, org = "www", domain = "quickbase", proxy_options = nil )
-      @useSSL = useSSL
-      @org = org
-      @domain = domain
-      if USING_HTTPCLIENT
-        if proxy_options
-           @httpConnection = HTTPClient.new( "http://#{proxy_options["proxy_server"]}:#{proxy_options["proxy_port"]}" )
-         @httpConnection.set_auth(proxy_options["proxy_server"], proxy_options["proxy_user"], proxy_options["proxy_password"])
+  def setHTTPConnection( useSSL, org = "www", domain = "quickbase", proxy_options = nil )
+    @useSSL = useSSL
+    @org = org
+    @domain = domain
+    if USING_HTTPCLIENT
+      if proxy_options
+        @httpConnection = HTTPClient.new( "http://#{proxy_options["proxy_server"]}:#{proxy_options["proxy_port"]}" )
+        @httpConnection.set_auth(proxy_options["proxy_server"], proxy_options["proxy_user"], proxy_options["proxy_password"])
       else
-         @httpConnection = HTTPClient.new
+        @httpConnection = HTTPClient.new
       end
+    else
+      if proxy_options
+        @httpProxy = Net::HTTP::Proxy(proxy_options["proxy_server"], proxy_options["proxy_port"], proxy_options["proxy_user"], proxy_options["proxy_password"])
+        @httpConnection = @httpProxy.new( "#{@org}.#{@domain}.com", useSSL ? 443 : 80)
       else
-         if proxy_options
-            @httpProxy = Net::HTTP::Proxy(proxy_options["proxy_server"], proxy_options["proxy_port"], proxy_options["proxy_user"], proxy_options["proxy_password"])
-            @httpConnection = @httpProxy.new( "#{@org}.#{@domain}.com", useSSL ? 443 : 80)
-         else
-            @httpConnection = Net::HTTP.new( "#{@org}.#{@domain}.com", useSSL ? 443 : 80 )
-         end
-         @httpConnection.use_ssl = useSSL
-         @httpConnection.verify_mode = OpenSSL::SSL::VERIFY_NONE
+        @httpConnection = Net::HTTP.new( "#{@org}.#{@domain}.com", useSSL ? 443 : 80 )
       end
-   end
+      @httpConnection.use_ssl = useSSL
+      @httpConnection.verify_mode = OpenSSL::SSL::VERIFY_NONE
+    end
+  end
     
    # Causes useful information to be printed to the screen for every HTTP request.
    def debugHTTPConnection()
