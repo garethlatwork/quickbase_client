@@ -850,7 +850,7 @@ class Client
     def getApplicationVariables(dbid=nil)
       variablesHash = {}
       dbid ||= @dbid
-      qbc.getSchema(dbid)
+      getSchema(dbid)
       if @variables
          @variables.each_element_with_attribute( "name" ){ |var|
             if var.name == "var" and var.has_text?
