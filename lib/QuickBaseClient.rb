@@ -15,6 +15,7 @@ require 'rexml/document'
 require 'net/https'
 require 'json'
 require 'QuickBaseMisc'
+require 'csv'
 
 begin
   require 'httpclient'
@@ -1495,20 +1496,8 @@ class Client
 
    # Converts a string into an array, given a field separator.
    # '"' followed by the field separator are treated the same way as just the field separator.
-   def splitString( string, fieldSeparator = "," )
-      ra = []
-      string.chomp!
-      if string.include?( "\"" )
-         a=string.split( "\"#{fieldSeparator}" )
-         a.each{ |b| c=b.split( "#{fieldSeparator}\"" )
-            c.each{ |d|
-               ra << d
-            }
-         }
-      else
-         ra = string.split( fieldSeparator )
-      end
-      ra
+   def splitString(string, fieldSeparator = ",")
+     CSV.parse(string, col_sep: fieldSeparator).shift
    end
 
    # Returns the URL-encoded version of a non-printing character.
