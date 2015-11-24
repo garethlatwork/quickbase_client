@@ -1497,6 +1497,7 @@ class Client
    # Converts a string into an array, given a field separator.
    # '"' followed by the field separator are treated the same way as just the field separator.
    def splitString(string, fieldSeparator = ",")
+     string &&= string.encode("UTF-8", "binary", :invalid => :replace, :undef => :replace, :replace => "")
      CSV.parse(string, col_sep: fieldSeparator).shift
    end
 
@@ -4457,9 +4458,8 @@ class Client
                else
                   csvdata = ""
                   validLines.each{ |line| 
-                     if line 
-                        csvdata << line.join( ',' ) 
-                        csvdata << "\n"
+                     if line
+                       csvdata << line.to_csv
                      end
                   }
                   clist = targetFieldIDs.join( '.' )
