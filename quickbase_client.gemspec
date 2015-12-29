@@ -1,5 +1,5 @@
 Gem::Specification.new do |s|
-  s.name        = 'QuickBaseClient'
+  s.name        = 'quickbase_client'
   s.version     = '0.1.0'
   s.licenses    = ['MIT']
   s.summary     = "Updated quickbase client"
