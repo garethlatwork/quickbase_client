@@ -1,5 +1,7 @@
 == Change History
 
+1.0.25 - 03/24/2015 - Fixed bug with addOrEditRecord
+
 1.0.24 - 03/15/2013 - Improved getRealmForDbid(dbid)
 
 1.0.23 - 03/11/2013 - Added getRealmForDbid(dbid)
