@@ -58,7 +58,7 @@ class Client
    attr_reader :serverStatus, :serverVersion ,  :serverUsers,  :serverGroups, :serverDatabases, :serverUptime, :serverUpdays 
    attr_reader :showAppData, :skipfirst, :slist, :sourcerid, :standardRequestHeaders, :status, :stopOnError
    attr_reader :table, :tables, :ticket, :type, :udata, :uname, :update_id, :user, :userid  
-   attr_reader :username, :users, :value, :validFieldProperties, :validFieldTypes, :variables 
+   attr_reader :username, :users, :value, :validFieldProperties, :validFieldTypes, :variables , :usertoken
    attr_reader :varname, :version, :vid, :view, :withembeddedtables
    attr_reader :eventSubscribers, :logger
 
@@ -82,6 +82,7 @@ class Client
    # use QuickBase::Client.init(options) instead of QuickBase::Client.new()
    def initialize( username = nil, 
                        password = nil, 
+                       usertoken = nil, 
                        appname = nil, 
                        useSSL = true, 
                        printRequestsAndResponses = false, 
@@ -104,6 +105,8 @@ class Client
          setHTTPConnectionAndqbhost( useSSL, org, domain, proxy_options )         
          debugHTTPConnection() if debugHTTPConnection
          @standardRequestHeaders = { "Content-Type" => "application/xml" }
+         
+         
          if username and password
             authenticate( username, password )
             if appname and @errcode == "0"
@@ -114,6 +117,12 @@ class Client
                end
             end
          end
+         
+         if usertoken
+            @usertoken = usertoken
+         end
+        
+         
       rescue Net::HTTPBadRequest => @lastError
       rescue Net::HTTPBadResponse => @lastError
       rescue Net::HTTPHeaderSyntaxError => @lastError
@@ -137,6 +146,7 @@ class Client
      
      instance = Client.new( options["username"], 
                                      options["password"], 
+                                     options["usertoken"], 
                                      options["appname"],
                                      options["useSSL"], 
                                      options["printRequestsAndResponses"],
@@ -208,7 +218,10 @@ class Client
 
       # set up the request
       getDBforRequestURL( api_Request )
+      
       getAuthenticationXMLforRequest( api_Request )
+          
+      
       isHTMLRequest = isHTMLRequest?( api_Request )
       api_Request = "API_" + api_Request.to_s if prependAPI?( api_Request )
 
@@ -302,11 +315,17 @@ class Client
    # The XML includes a apptoken if one has been set. 
    def getAuthenticationXMLforRequest( api_Request )
       @authenticationXML = ""
-      if @ticket
-         @authenticationXML = toXML( :ticket, @ticket )
-      elsif @username and @password
-         @authenticationXML = toXML( :username, @username ) + toXML( :password, @password )
+      
+      if @usertoken
+        @authenticationXML = toXML( :usertoken, @usertoken )
+      else
+          if @ticket
+             @authenticationXML = toXML( :ticket, @ticket )
+          elsif @username and @password
+             @authenticationXML = toXML( :username, @username ) + toXML( :password, @password )
+          end
       end
+      
       @authenticationXML << toXML( :apptoken, @apptoken ) if @apptoken
    end
 
@@ -1818,6 +1837,10 @@ class Client
    def authenticate( username, password, hours = nil )
 
       @username, @password, @hours = username, password, hours
+      
+      if @usertoken
+        return
+      end
 
       if username and password
 
