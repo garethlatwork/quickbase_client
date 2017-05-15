@@ -63,7 +63,7 @@ class Client
    attr_reader :eventSubscribers, :logger
 
    attr_writer :cacheSchemas, :apptoken, :escapeBR, :fvlist, :httpConnection, :ignoreCR, :ignoreLF, :ignoreTAB 
-   attr_writer :printRequestsAndResponses, :qbhost, :stopOnError, :ticket, :udata, :rdr, :xsl, :encoding
+   attr_writer :printRequestsAndResponses, :qbhost, :stopOnError, :ticket, :udata, :rdr, :xsl, :encoding, :usertoken
 
 =begin rdoc
  'Plumbing' methods:
@@ -91,12 +91,14 @@ class Client
                        apptoken = nil,
                        debugHTTPConnection = false,
                        domain = "quickbase",
-                       proxy_options = nil
+                       proxy_options = nil,
+                       usertoken = nil
                        )
       begin
          @org = org ? org : "www"
          @domain = domain ? domain : "quickbase"
          @apptoken = apptoken
+         @usertoken = usertoken
          @printRequestsAndResponses = printRequestsAndResponses
          @stopOnError = stopOnError
          @escapeBR = @ignoreCR = @ignoreLF = @ignoreTAB = true
@@ -146,7 +148,8 @@ class Client
                                      options["apptoken"],
                                      options["debugHTTPConnection"],
                                      options["domain"],
-                                     options["proxy_options"])
+                                     options["proxy_options"],
+                                     options["usertoken"])
    end
 
    # Initializes the connection to QuickBase.
@@ -302,12 +305,16 @@ class Client
    # The XML includes a apptoken if one has been set. 
    def getAuthenticationXMLforRequest( api_Request )
       @authenticationXML = ""
-      if @ticket
-         @authenticationXML = toXML( :ticket, @ticket )
-      elsif @username and @password
-         @authenticationXML = toXML( :username, @username ) + toXML( :password, @password )
+      if api_Request.to_s.eql?('getSchema')
+         @authenticationXML = toXML( :usertoken, @usertoken )
+      else
+         if @ticket
+            @authenticationXML = toXML( :ticket, @ticket )
+         elsif @username and @password
+            @authenticationXML = toXML( :username, @username ) + toXML( :password, @password )
+         end
+         @authenticationXML << toXML( :apptoken, @apptoken ) if @apptoken
       end
-      @authenticationXML << toXML( :apptoken, @apptoken ) if @apptoken
    end
 
    # Returns whether a request will return HTML rather than XML.
