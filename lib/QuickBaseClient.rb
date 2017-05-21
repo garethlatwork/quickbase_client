@@ -63,7 +63,7 @@ class Client
    attr_reader :eventSubscribers, :logger
 
    attr_writer :cacheSchemas, :apptoken, :escapeBR, :fvlist, :httpConnection, :ignoreCR, :ignoreLF, :ignoreTAB 
-   attr_writer :printRequestsAndResponses, :qbhost, :stopOnError, :ticket, :udata, :rdr, :xsl, :encoding
+   attr_writer :printRequestsAndResponses, :qbhost, :stopOnError, :ticket, :udata, :rdr, :xsl, :encoding, :usertoken
 
 =begin rdoc
  'Plumbing' methods:
@@ -91,12 +91,14 @@ class Client
                        apptoken = nil,
                        debugHTTPConnection = false,
                        domain = "quickbase",
-                       proxy_options = nil
+                       proxy_options = nil,
+                       usertoken = nil
                        )
       begin
          @org = org ? org : "www"
          @domain = domain ? domain : "quickbase"
          @apptoken = apptoken
+         @usertoken = usertoken
          @printRequestsAndResponses = printRequestsAndResponses
          @stopOnError = stopOnError
          @escapeBR = @ignoreCR = @ignoreLF = @ignoreTAB = true
@@ -104,15 +106,12 @@ class Client
          setHTTPConnectionAndqbhost( useSSL, org, domain, proxy_options )         
          debugHTTPConnection() if debugHTTPConnection
          @standardRequestHeaders = { "Content-Type" => "application/xml" }
-         if username and password
-            authenticate( username, password )
             if appname and @errcode == "0"
                findDBByname( appname )
                if @dbid and @errcode == "0"
                  getDBInfo( @dbid )
                  getSchema( @dbid )
                end
-            end
          end
       rescue Net::HTTPBadRequest => @lastError
       rescue Net::HTTPBadResponse => @lastError
@@ -146,7 +145,8 @@ class Client
                                      options["apptoken"],
                                      options["debugHTTPConnection"],
                                      options["domain"],
-                                     options["proxy_options"])
+                                     options["proxy_options"],
+                                     options["usertoken"])
    end
 
    # Initializes the connection to QuickBase.
@@ -293,7 +293,7 @@ class Client
       case api_Request
          when :getAppDTMInfo
             @dbidForRequestURL = "/db/main?a=#{:getAppDTMInfo}&dbid=#{@dbid}"
-         when :authenticate, :createDatabase, :deleteAppZip, :dumpAppZip, :getUserInfo, :findDBByname, :getOneTimeTicket, :getFileUploadToken, :grantedDBs, :installAppZip, :obStatus, :signOut
+         when :authenticate, :createDatabase, :deleteAppZip, :dumpAppZip, :getUserInfo, :findDBByname, :GrantedDBs, :getOneTimeTicket, :getFileUploadToken, :grantedDBs, :installAppZip, :obStatus, :signOut
             @dbidForRequestURL = "/db/main"
       end
    end
@@ -302,12 +302,7 @@ class Client
    # The XML includes a apptoken if one has been set. 
    def getAuthenticationXMLforRequest( api_Request )
       @authenticationXML = ""
-      if @ticket
-         @authenticationXML = toXML( :ticket, @ticket )
-      elsif @username and @password
-         @authenticationXML = toXML( :username, @username ) + toXML( :password, @password )
-      end
-      @authenticationXML << toXML( :apptoken, @apptoken ) if @apptoken
+      @authenticationXML = toXML( :usertoken, @usertoken )
    end
 
    # Returns whether a request will return HTML rather than XML.
@@ -2328,8 +2323,8 @@ class Client
       @dbname = dbname
       xmlRequestData = toXML( :dbname, @dbname )
 
-      sendRequest( :findDBByname, xmlRequestData )
-      @dbid = getResponseValue( :dbid )
+      sendRequest( :GrantedDBs, xmlRequestData )
+      @dbid = getResponsePathValue( 'databases/dbinfo/dbid[1]' )
 
       return self if @chainAPIcalls
       @dbid
