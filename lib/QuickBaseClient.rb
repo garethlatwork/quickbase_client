@@ -302,16 +302,7 @@ class Client
    # The XML includes a apptoken if one has been set. 
    def getAuthenticationXMLforRequest( api_Request )
       @authenticationXML = ""
-      if api_Request.to_s.eql?('getSchema')
-         @authenticationXML = toXML( :usertoken, @usertoken )
-      else
-         if @ticket
-            @authenticationXML = toXML( :ticket, @ticket )
-         elsif @username and @password
-            @authenticationXML = toXML( :username, @username ) + toXML( :password, @password )
-         end
-         @authenticationXML << toXML( :apptoken, @apptoken ) if @apptoken
-      end
+      @authenticationXML = toXML( :usertoken, @usertoken )
    end
 
    # Returns whether a request will return HTML rather than XML.
