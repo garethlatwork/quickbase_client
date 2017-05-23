@@ -439,7 +439,7 @@ class Client
        @fieldValue
    end
 
-   #Gets an dbid at an Xpath in the XML from specified dbName of Quickbase
+   #Gets a dbid at an Xpath in the XML from specified dbName of Quickbase
    def getResponsePathValueByDBName ( path, dbName)
       @fieldValue = ""
       if path and @responseXMLdoc
