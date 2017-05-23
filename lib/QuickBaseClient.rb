@@ -439,6 +439,19 @@ class Client
        @fieldValue
    end
 
+   #Gets a dbid at an Xpath in the XML from specified dbName of Quickbase
+   def getResponsePathValueByDBName ( path, dbName)
+      @fieldValue = ""
+      if path and @responseXMLdoc
+         e = @responseXMLdoc.root.elements[ path.to_s ]
+      end
+      e.each { |e|
+         if e and e.is_a?( REXML::Element ) and e.dbinfo.dbname == dbName
+            return  e.dbinfo.dbid
+         end
+      }
+      @fieldValue
+   end
    # Gets an array of elements at an Xpath in the XML from QuickBase.
    def getResponseElements( path )
       if path and @responseXMLdoc
@@ -2324,7 +2337,7 @@ class Client
       xmlRequestData = toXML( :dbname, @dbname )
 
       sendRequest( :GrantedDBs, xmlRequestData )
-      @dbid = getResponsePathValue( 'databases/dbinfo/dbid[1]' )
+      @dbid = getResponsePathValueByDBName( 'databases', dbname )
 
       return self if @chainAPIcalls
       @dbid
