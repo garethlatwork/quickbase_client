@@ -61,7 +61,6 @@ class Client
    attr_reader :username, :users, :value, :validFieldProperties, :validFieldTypes, :variables 
    attr_reader :varname, :version, :vid, :view, :withembeddedtables
    attr_reader :eventSubscribers, :logger
-   attr_reader :groupid
 
    attr_writer :cacheSchemas, :apptoken, :escapeBR, :fvlist, :httpConnection, :ignoreCR, :ignoreLF, :ignoreTAB 
    attr_writer :printRequestsAndResponses, :qbhost, :stopOnError, :ticket, :udata, :rdr, :xsl, :encoding
@@ -852,7 +851,7 @@ class Client
     def getApplicationVariables(dbid=nil)
       variablesHash = {}
       dbid ||= @dbid
-      getSchema(dbid)
+      qbc.getSchema(dbid)
       if @variables
          @variables.each_element_with_attribute( "name" ){ |var|
             if var.name == "var" and var.has_text?
@@ -1732,20 +1731,6 @@ class Client
     
    # API_AddReplaceDBPage, using the active table id.
    def _addReplaceDBPage( *args ) addReplaceDBPage( @dbid, args ) end
-
-
-  # API_AddUserToGroup
-  def addUserToGroup( userid, groupid )
-    @userid, @groupid = userid, groupid
-
-    xmlRequestData = toXML ( :userid, @userid )
-    xmlRequestData << toXML ( :groupid, @groupid )
-
-    sendRequest( :addUserToGroup, xmlRequestData )
-
-    return self if @chainAPIcalls
-    @requestSucceeded
-  end
 
    # API_AddUserToRole
    def addUserToRole( dbid, userid, roleid )
