@@ -23,10 +23,12 @@ More information about the QuickBase Client is available here -
 - QuickBase API Cookbook: https://www.quickbase.com/db/bcdcajmrf 
 - Github: https://github.com/garethlatwork/quickbase_client 
 - Github: https://github.com/garethlatwork/quickbase_client_extras 
-- Code Intuit Com: https://code.intuit.com/sf/projects/ipp_dev_kits 
-- ipp_quickbase_devkit: https://code.intuit.com/sf/wiki/do/viewPage/projects.ipp_dev_kits/wiki/RubyDevKit 
 
 == Change History
+
+1.0.26 - 10/02/2019 - Restored 1.0.24 behavior of def initialize(), added else block for 1.0.25 change.
+
+1.0.25 - 05/24/2017 - Merged in changes.  See github.
 
 1.0.24 - 03/15/2013 - Improved getRealmForDbid(dbid)
 
@@ -50,17 +52,15 @@ More information about the QuickBase Client is available here -
 
 1.0.14 - 05/29/2011 - Added support for new List-User field type.
 
-1.0.13 - 05/10/2011 - Added getRecords(): get an array of records using record ids.
-
 See CHANGES file for earlier updates.
 
 == Questions?
 
-Please submit questions, feedback, suggestions on Intuit's Community Forum at https://quickbase-community-e2e.intuit.com .
+Please submit questions, feedback, suggestions on Intuit's Community Forum at https://community.quickbase.com/home .
 
 == License
 
-Copyright (c) 2009-2013 Gareth Lewis
+Copyright (c) 2009-2019 Gareth Lewis
 
 All rights reserved. This program and the accompanying materials
 are made available under the terms of the Eclipse Public License v1.0
