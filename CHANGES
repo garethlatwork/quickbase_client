@@ -1,5 +1,9 @@
 == Change History
 
+1.0.26 - 05/24/2017 - Restored 1.0.24 default behavior of def initialize() and added else block for 1.0.25 change.
+
+1.0.25 - 05/24/2017 - Merged in changes.  See github.
+
 1.0.24 - 03/15/2013 - Improved getRealmForDbid(dbid)
 
 1.0.23 - 03/11/2013 - Added getRealmForDbid(dbid)
