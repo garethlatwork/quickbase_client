@@ -106,12 +106,23 @@ class Client
          setHTTPConnectionAndqbhost( useSSL, org, domain, proxy_options )         
          debugHTTPConnection() if debugHTTPConnection
          @standardRequestHeaders = { "Content-Type" => "application/xml" }
+         if username and password
+            authenticate( username, password )
             if appname and @errcode == "0"
                findDBByname( appname )
                if @dbid and @errcode == "0"
                  getDBInfo( @dbid )
                  getSchema( @dbid )
                end
+            end
+         else   
+            if appname and @errcode == "0"
+               findDBByname( appname )
+               if @dbid and @errcode == "0"
+                 getDBInfo( @dbid )
+                 getSchema( @dbid )
+               end
+            end
          end
       rescue Net::HTTPBadRequest => @lastError
       rescue Net::HTTPBadResponse => @lastError
