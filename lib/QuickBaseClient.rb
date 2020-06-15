@@ -302,7 +302,7 @@ class Client
    def getDBforRequestURL( api_Request )
       @dbidForRequestURL = "/db/#{@dbid}"
       case api_Request
-         when :getAppDTMInfo
+         when :licaDTMInfo
             @dbidForRequestURL = "/db/main?a=#{:getAppDTMInfo}&dbid=#{@dbid}"
          when :authenticate, :createDatabase, :deleteAppZip, :dumpAppZip, :getUserInfo, :findDBByname, :GrantedDBs, :getOneTimeTicket, :getFileUploadToken, :grantedDBs, :installAppZip, :obStatus, :signOut
             @dbidForRequestURL = "/db/main"
@@ -870,7 +870,7 @@ class Client
     def getApplicationVariables(dbid=nil)
       variablesHash = {}
       dbid ||= @dbid
-      qbc.getSchema(dbid)
+      getSchema(dbid)
       if @variables
          @variables.each_element_with_attribute( "name" ){ |var|
             if var.name == "var" and var.has_text?
